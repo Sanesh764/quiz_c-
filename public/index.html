@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>C++ Quiz Challenge</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div id="loading-screen" class="loading-screen">
+        <div class="loading-content">
+            <div class="loading-spinner"></div>
+            <h2>Generating Your Quiz...</h2>
+            <p>Creating fresh C++ questions just for you!</p>
+        </div>
+    </div>
+
+    <!-- Main Container -->
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-content">
+                <h1><i class="fas fa-code"></i> C++ Quiz Challenge</h1>
+                <p>Test your C++ programming knowledge with AI-generated questions</p>
+                <div class="header-controls">
+                    <button id="theme-toggle" class="btn btn-icon" title="Toggle Theme">
+                        <i class="fas fa-moon"></i>
+                    </button>
+                    <button id="stats-btn" class="btn btn-icon" title="View Statistics">
+                        <i class="fas fa-chart-bar"></i>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Difficulty Selection Screen -->
+        <div id="difficulty-screen" class="screen active">
+            <div class="difficulty-content">
+                <h2>Choose Your Challenge Level</h2>
+                <div class="difficulty-cards">
+                    <div class="difficulty-card" data-difficulty="basic">
+                        <div class="card-icon">
+                            <i class="fas fa-seedling"></i>
+                        </div>
+                        <h3>Basic</h3>
+                        <p>Perfect for beginners. Covers basic syntax, variables, and simple concepts.</p>
+                        <div class="card-features">
+                            <span><i class="fas fa-check"></i> Variables & Data Types</span>
+                            <span><i class="fas fa-check"></i> Basic Syntax</span>
+                            <span><i class="fas fa-check"></i> Simple Loops</span>
+                        </div>
+                        <div class="card-stats" id="basic-stats">
+                            <span class="stat">Best: <span id="basic-best">0%</span></span>
+                            <span class="stat">Completed: <span id="basic-completed">0</span></span>
+                        </div>
+                    </div>
+                    
+                    <div class="difficulty-card" data-difficulty="moderate">
+                        <div class="card-icon">
+                            <i class="fas fa-cogs"></i>
+                        </div>
+                        <h3>Moderate</h3>
+                        <p>For intermediate learners. Functions, classes, and memory management.</p>
+                        <div class="card-features">
+                            <span><i class="fas fa-check"></i> Functions & Classes</span>
+                            <span><i class="fas fa-check"></i> Pointers & Memory</span>
+                            <span><i class="fas fa-check"></i> STL Basics</span>
+                        </div>
+                        <div class="card-stats" id="moderate-stats">
+                            <span class="stat">Best: <span id="moderate-best">0%</span></span>
+                            <span class="stat">Completed: <span id="moderate-completed">0</span></span>
+                        </div>
+                    </div>
+                    
+                    <div class="difficulty-card" data-difficulty="harder">
+                        <div class="card-icon">
+                            <i class="fas fa-rocket"></i>
+                        </div>
+                        <h3>Harder</h3>
+                        <p>Advanced challenges. Templates, smart pointers, and design patterns.</p>
+                        <div class="card-features">
+                            <span><i class="fas fa-check"></i> Advanced OOP</span>
+                            <span><i class="fas fa-check"></i> Templates</span>
+                            <span><i class="fas fa-check"></i> Design Patterns</span>
+                        </div>
+                        <div class="card-stats" id="harder-stats">
+                            <span class="stat">Best: <span id="harder-best">0%</span></span>
+                            <span class="stat">Completed: <span id="harder-completed">0</span></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quiz Screen -->
+        <div id="quiz-screen" class="screen">
+            <div class="quiz-header">
+                <div class="quiz-info">
+                    <span id="difficulty-badge" class="difficulty-badge"></span>
+                    <span id="question-counter" class="question-counter">Question 1 of 10</span>
+                </div>
+                <div class="timer-container">
+                    <div class="timer-circle">
+                        <svg class="timer-svg" viewBox="0 0 100 100">
+                            <circle class="timer-bg" cx="50" cy="50" r="45"></circle>
+                            <circle id="timer-progress" class="timer-progress" cx="50" cy="50" r="45"></circle>
+                        </svg>
+                        <div class="timer-text">
+                            <span id="timer-display">60</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="progress-container">
+                <div class="progress-bar">
+                    <div id="progress-fill" class="progress-fill"></div>
+                </div>
+                <span id="progress-text" class="progress-text">0% Complete</span>
+            </div>
+
+            <div class="question-container">
+                <div class="question-content">
+                    <h2 id="question-text">Loading question...</h2>
+                    <div id="options-container" class="options-container">
+                        <!-- Options will be dynamically generated -->
+                    </div>
+                </div>
+            </div>
+
+            <div class="quiz-controls">
+                <button id="next-btn" class="btn btn-primary" disabled>
+                    <span>Next Question</span>
+                    <i class="fas fa-arrow-right"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Results Screen -->
+        <div id="results-screen" class="screen">
+            <div class="results-content">
+                <div class="results-header">
+                    <div class="score-circle">
+                        <div class="score-inner">
+                            <span id="final-score" class="score-number">0</span>
+                            <span class="score-label">Score</span>
+                        </div>
+                    </div>
+                    <h2 id="results-title">Quiz Complete!</h2>
+                    <p id="results-subtitle">Great job on completing the quiz!</p>
+                </div>
+
+                <div class="results-stats">
+                    <div class="stat-card">
+                        <div class="stat-icon correct">
+                            <i class="fas fa-check"></i>
+                        </div>
+                        <div class="stat-content">
+                            <span class="stat-number" id="correct-count">0</span>
+                            <span class="stat-label">Correct</span>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-icon incorrect">
+                            <i class="fas fa-times"></i>
+                        </div>
+                        <div class="stat-content">
+                            <span class="stat-number" id="incorrect-count">0</span>
+                            <span class="stat-label">Incorrect</span>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-icon time">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <div class="stat-content">
+                            <span class="stat-number" id="time-spent">0m</span>
+                            <span class="stat-label">Time</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="detailed-results">
+                    <h3>Question Review</h3>
+                    <div id="question-review" class="question-review">
+                        <!-- Detailed results will be populated here -->
+                    </div>
+                </div>
+
+                <div class="results-actions">
+                    <button id="retry-btn" class="btn btn-secondary">
+                        <i class="fas fa-redo"></i>
+                        Try Again
+                    </button>
+                    <button id="new-quiz-btn" class="btn btn-primary">
+                        <i class="fas fa-plus"></i>
+                        New Quiz
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Error Modal -->
+    <div id="error-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="fas fa-exclamation-triangle"></i> Error</h3>
+                <button class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p id="error-message">Something went wrong. Please try again.</p>
+            </div>
+            <div class="modal-footer">
+                <button id="error-ok-btn" class="btn btn-primary">OK</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
