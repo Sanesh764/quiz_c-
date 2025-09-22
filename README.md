@@ -1,5 +1,7 @@
 # C++ Quiz Challenge
 
+views quiz application live : https://quiz-c.onrender.com
+
 A modern, interactive C++ programming quiz application powered by AI-generated questions using Google's Gemini AI.
 
 ## Features
